@@ -1,0 +1,16 @@
+all:
+  children:
+    jenkins:
+      hosts:
+        172.31.1.142:
+    prod:
+      hosts:    
+        172.31.3.180:
+    test:
+      hosts:    
+        172.31.24.231:
+  vars:
+    ansible_user: ubuntu
+    ansible_ssh_private_key_file: '~/.ssh/ansible_id_rsa'
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=no' 
+
