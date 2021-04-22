@@ -8,12 +8,14 @@
     stages {
 
         stage("SSH to machine"){
-            script{
-                sh "ssh 18.132.14.20 -oStrictHostKeyChecking=no << EOF"
-                sh "git clone https://github.com/CP11B/project_devops.git"
-                sh "cd ./project_devops"
-                sh "docker compose up"
-            }    
+            steps{
+                script{
+                    sh "ssh 18.132.14.20 -oStrictHostKeyChecking=no << EOF"
+                    sh "git clone https://github.com/CP11B/project_devops.git"
+                    sh "cd ./project_devops"
+                    sh "docker compose up"
+                } 
+            }   
         }
 
         stage("Build"){
@@ -23,7 +25,6 @@
         }
 
         stage("Push"){
-
             steps{
                 script{
                     sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD} docker.io"
