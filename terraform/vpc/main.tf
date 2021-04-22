@@ -69,6 +69,30 @@ resource "aws_security_group" "allow_web" {
 
     ingress {
         description = "http traffic"
+        from_port = 2222
+        to_port = 2222
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    ingress {
+        description = "http traffic"
+        from_port = 5000
+        to_port = 5000
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    
+    ingress {
+        description = "http traffic"
+        from_port = 5001
+        to_port = 5001
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    ingress {
+        description = "http traffic"
         from_port = 8080
         to_port = 8080
         protocol = "tcp"
@@ -100,15 +124,13 @@ resource "aws_security_group" "allow_sql" {
     name = "allow_sql"
     description = "Allow web inbound traffic"
     vpc_id = aws_vpc.production.id
-    
     ingress {
         description = "sql"
         from_port = 3306
         to_port = 3306
         protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
+        security_groups = [aws_security_group.allow_web.id]
     }
-
     ingress {
         description = "ssh"
         from_port = 22
@@ -116,5 +138,4 @@ resource "aws_security_group" "allow_sql" {
         protocol = "tcp"
         cidr_blocks = ["0.0.0.0/0"]
     }
-
 }
