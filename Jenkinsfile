@@ -22,9 +22,12 @@
         }
 
         stage("Push"){
-            steps{  
-                sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD} docker.io"
-                sh "docker-compose push"
+
+            steps{
+                script{
+                    sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD} docker.io"
+                    sh "docker-compose push"
+                }
             }
         }
         
