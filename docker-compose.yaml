@@ -35,8 +35,8 @@ services:
         build: ./backend
         image: enixon/backend
         ports:
-        - target: 2222
-          published: 2222
+        - target: 5001
+          published: 5001
 
 volumes:
   testdb:
