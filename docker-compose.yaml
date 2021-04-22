@@ -3,13 +3,13 @@ services:
     db:
         container_name: mysql
         build: ./db
-        ###### image: 
+        image: enixon/testdb
         environment: 
         MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
         MYSQL_DATABASE: testdb
         volumes:
         -type: volume
-        ###### source: 
+        source: testdb
         target: /var/lib/mysql
     nginx:
         image: nginx:latest
@@ -25,7 +25,7 @@ services:
     frontend:
         container_name: frontend
         build: ./frontend
-        ###### image:
+        image: enixon/frontend
         ports:
         - target: 5000
           published: 5000
@@ -33,7 +33,7 @@ services:
     backend:
         container_name: backend
         build: ./backend
-        ###### image:
+        image: enixon/backend
         environment:
         DATABASE_URI: ${DATABASE_URI}
         depends_on:
