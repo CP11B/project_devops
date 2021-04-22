@@ -7,8 +7,8 @@ services:
         environment: 
           MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
           MYSQL_DATABASE: testdb
-        volumes:
-        - type: volume
+          volumes:
+          - type: volume
           source: testdb
           target: /var/lib/mysql
     nginx:
