@@ -41,3 +41,16 @@ module "ec2" {
     db_password = var.db_password
   
 }
+
+resource "local_file" "tf_ips" {
+  filename = "tf_ips"
+  content = <<-DOC
+    [jenkins]
+    ${module.ec2.jenkins_ip} 
+    [production]
+    ${module.ec2.production_ip} 
+    [test]
+    ${module.ec2.test_ip} 
+    
+    DOC
+}
