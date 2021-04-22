@@ -37,3 +37,6 @@ services:
         ports:
         - target: 2222
           published: 2222
+
+volumes:
+  testdb:
