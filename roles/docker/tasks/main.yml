@@ -39,11 +39,6 @@
     state: present
     update_cache: true 
 
-
-- name: docker
-  pip:
-    name: docker
-
 - name: json
   pip:
     name: jsondiff
@@ -89,7 +84,7 @@
 
 - name: ssh folder
   file:
-    path: /home/ubuntu/.ssh
+    path: /home/jenkins/.ssh
     state: directory
     mode: "0700"
     owner: jenkins
@@ -98,7 +93,7 @@
 - name: install public key
   copy:
     src: ~/.ssh/ansible_id_rsa.pub
-    dest: /home/ubuntu/.ssh/authorized_keys
+    dest: /home/jenkins/.ssh/authorized_keys
     owner: jenkins
     group: jenkins
     mode: u=rw,g=,o=
