@@ -16,3 +16,11 @@
 
 - name: install jenkins
   apt: name=jenkins state=present
+
+- name: Get init password Jenkins
+  shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+  changed_when: false
+  register: result
+- name: Print init password Jenkins
+  debug:
+    var: result.stdout
