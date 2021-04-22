@@ -14,7 +14,6 @@
                     sh "rm -rf ./project_devops"
                     sh "git clone https://github.com/CP11B/project_devops.git"
                     sh "cd ./project_devops"
-                    sh "docker-compose up"
                 } 
             }   
         }
