@@ -7,6 +7,7 @@
   user:
     name: jenkins
     shell: /bin/bash
+
 - name: prerequisites
   apt:
     pkg:
@@ -15,15 +16,34 @@
     - curl
     - gnupg2
     - software-properties-common
-    - python3-pip
-    - python-pip
     - git
+    
     state: latest
     update_cache: true
+
+- name: Install python3
+  apt:
+    pkg:
+    - python3
+    - python3-virtualenv
+    - python3-dev
+    - virtualenv
+    state: present
+    update_cache: true
+
+- name: Install python-pip
+  apt:
+    pkg:
+    - python3-pip
+    - curl
+    state: present
+    update_cache: true 
+
 
 - name: docker
   pip:
     name: docker
+
 - name: json
   pip:
     name: jsondiff
@@ -36,14 +56,17 @@
 - name: compose
   pip:
     name: docker-compose
+
 - name: docker gpg key
   apt_key:
     url: "https://download.docker.com/linux/debian/gpg"
     state: present
+
 - name: docker apt repo
   apt_repository:
     repo: "deb [arch=amd64] https://download.docker.com/linux/debian stretch stable"
     state: present
+
 - name: docker install
   apt:
     pkg:
@@ -52,20 +75,12 @@
     - containerd.io
     state: latest
     update_cache: true
+
 - name: docker service
   service:
     name: docker
     state: started
-- name: insecure registry create Dir
-  file:
-    path: /etc/docker/
-    state: directory
-    mode: "0700"
-- name: insecure registry copy file
-  copy:
-    src: ./daemon.json
-    dest: /etc/docker/daemon.json
-    mode: u=rw,g=,o=
+
 - name: Add jenkins user to docker group
   user:
     name: jenkins
@@ -79,6 +94,7 @@
     mode: "0700"
     owner: jenkins
     group: jenkins 
+
 - name: install public key
   copy:
     src: ~/.ssh/ansible_id_rsa.pub
