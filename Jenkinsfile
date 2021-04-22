@@ -13,7 +13,7 @@
                     sh "ssh 18.132.14.20 -oStrictHostKeyChecking=no << EOF"
                     sh "git clone https://github.com/CP11B/project_devops.git"
                     sh "cd ./project_devops"
-                    sh "docker compose up"
+                    sh "docker-compose up"
                 } 
             }   
         }
