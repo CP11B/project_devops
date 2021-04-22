@@ -3,6 +3,7 @@
     environment {
         MYSQL_ROOT_PASSWORD = credentials("MYSQL_ROOT_PASSWORD")
         DOCKER_PASSWORD = credentials("DOCKER_PASSWORD")
+        DOCKER_USERNAME = credentials("DOCKER_USERNAME")
     }
     stages {
         stage("Build"){
@@ -13,6 +14,7 @@
 
         stage("Push"){
             steps{
+                sh "docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}" docker.io"
                 sh "docker-compose push"
             }
         }
