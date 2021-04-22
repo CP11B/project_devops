@@ -2,7 +2,7 @@ version: "3.8"
 services:
     db:
         container_name: mysql
-        build: ./db
+        build: ./database
         image: enixon/testdb
         environment: 
           MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
