@@ -2,8 +2,8 @@
   become: yes
   hosts: jenkins
   roles: 
-  - jenkins
   - docker
+  - jenkins
 
 - name: install Docker onto Production machine
   become: yes
