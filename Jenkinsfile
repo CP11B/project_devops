@@ -8,11 +8,11 @@
     stages {
 
         stage("SSH to machine"){
-            ssh 18.132.14.20 -oStrictHostKeyChecking=no  << EOF
+            sh "ssh 18.132.14.20 -oStrictHostKeyChecking=no  << EOF
             git clone https://github.com/CP11B/project_devops.git
             cd ./project_devops
             docker compose up
-            EOF
+            EOF"
         }
 
         stage("Build"){
