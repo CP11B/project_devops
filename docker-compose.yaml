@@ -40,4 +40,4 @@ services:
             - db
         ports:
             - target: 5001
-                published: 5001
+            - published: 5001
