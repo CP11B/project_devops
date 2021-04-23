@@ -20,9 +20,11 @@
                     docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD} docker.io
                     docker-compose push
                     docker-compose up -d
+                    
                 '''
             }   
         }    
+
 
         stage("tests"){
             steps{
@@ -35,5 +37,6 @@
                 '''
             }
         }
+
     }
 }
