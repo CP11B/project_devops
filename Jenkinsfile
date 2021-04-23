@@ -1,13 +1,14 @@
   pipeline {
     agent any
+
     environment {
         MYSQL_ROOT_PASSWORD = credentials("MYSQL_ROOT_PASSWORD")
         DOCKER_PASSWORD = credentials("DOCKER_PASSWORD")
         DOCKER_USERNAME = credentials("DOCKER_USERNAME")
     }
-    stages {
 
-        stage("SSH to machine"){
+    stages {
+        stage("deploy app"){
             steps{                 
                 sh '''
                     ssh jenkins@35.176.101.104 -oStrictHostKeyChecking=no << EOF
@@ -19,13 +20,23 @@
                     docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD} docker.io
                     docker-compose push
                     docker-compose up -d
-                    pytest --cov application
+                    
                 '''
-
-               
             }   
+        }    
+
+
+        stage("tests"){
+            steps{
+                sh '''
+                    ssh jenkins@35.176.101.104 -oStrictHostKeyChecking=no << EOF
+                    cd ./project_devops/backend/
+                    python3 -m pip install -r requirements.txt
+                    python3 -m pytest
+                    python3 -m pytest --cov application
+                '''
+            }
         }
 
-        
     }
 }
