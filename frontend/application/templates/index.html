@@ -1,10 +1,26 @@
+{% block head %}
+<link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css">
+<script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+<script src="semantic/dist/semantic.min.js"></script>
+{% endblock head %}
+
 {% block body_content %}
-    <h1>Home Page</h1>
+    <h1 class="ui header">Home Page</h1>
     <p>Here are our users:</p>
     <form action="/" method="get">
-        {% for user in response %}
-        <p>{{ user["userName"] }}</p>
-        {% endfor %}
+        <div class="ui list">
+            {% for user in response %}
+            <div class="item">
+                <img class="small user icon">
+                <div class="content">
+                    <p>{{ user["userName"] }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
         <button onClick="window.location.reload();">Generate Usernames!</button>  
     </form>
 {% endblock body_content %}
