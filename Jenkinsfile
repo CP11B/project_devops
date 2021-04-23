@@ -13,7 +13,7 @@
                     ssh jenkins@18.130.245.47 -oStrictHostKeyChecking=no << EOF
                     sudo apt-get update
                     rm -rf ./project_devops
-                    git clone https://github.com/CP11B/project_devops.git
+                    git clone --single-branch --branch dev https://github.com/CP11B/project_devops.git
                     cd ./project_devops
                     docker-compose build --parallel
                     docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD} docker.io
