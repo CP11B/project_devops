@@ -20,7 +20,8 @@
                     docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD} docker.io
                     docker-compose push
                     docker-compose up -d
-                    pytest --cov application
+                    python -m pytest
+                    python -m pytest --cov application
                 '''
             }   
         }    
