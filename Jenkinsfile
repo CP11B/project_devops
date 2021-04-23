@@ -8,7 +8,7 @@
     }
 
     stages {
-        stage("SSH to machine"){
+        stage("deploy app"){
             steps{                 
                 sh '''
                     ssh jenkins@35.176.101.104 -oStrictHostKeyChecking=no << EOF
@@ -20,10 +20,18 @@
                     docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD} docker.io
                     docker-compose push
                     docker-compose up -d
-                    python -m pytest
-                    python -m pytest --cov application
                 '''
             }   
         }    
+
+        stage("tests"){
+            steps{
+                sh '''
+                    ssh jenkins@35.176.101.104 -oStrictHostKeyChecking=no << EOF
+                    cd ./project_devops
+                    python3 -m pytest
+                    python3 -m pytest --cov application
+                '''
+        }
     }
 }
