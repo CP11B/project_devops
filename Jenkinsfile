@@ -19,6 +19,9 @@
                     rm -rf ./project_devops
                     git clone --single-branch --branch dev https://github.com/CP11B/project_devops.git
                     cd ./project_devops
+                    export DATABASE_URI=${DATABASE_URI}
+                    export SECRET_KEY=${SECRET_KEY}
+                    export TEST_DATABASE_URI=${TEST_DATABASE_URI}
                     docker-compose build --parallel
                     docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD} docker.io
                     docker-compose push
