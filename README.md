@@ -1,8 +1,73 @@
-# QAC SFIA2 Project
+# QAC SFIA2 Project - Cara Prestwich and Emily Nixon
 
-This application is a simple [Flask application](https://flask.palletsprojects.com/en/1.1.x/quickstart/#a-minimal-application), ready to be deployed, for your SFIA2 project.
+This application is a simple [Flask application](https://flask.palletsprojects.com/en/1.1.x/quickstart/#a-minimal-application), that we had to deploy as our SFIA2 project. 
 
-The following information should be everything you need to complete the project.
+The brief for the project can be found at the end of this README. 
+
+The following information covers everything you need to start it up.
+
+## Prerequisites
+
+- Terraform must be installed on your local machine
+
+## Terraform Environment Variables
+
+Before you start using Terraform, there are a few variables that need to be set. These have been set locally in SystemPropertiesAdvanced. 
+
+To set the variables, use Windows Key + R, to bring up Run, and type in "SystemPropertiesAdvanced". From here, you want to click "Environment Variables" at the bottom of the
+pop-up. Next, in the box at the bottom, System Variables, you want to click New, and then enter "TF_VAR_access_key" into the "Variable Name" box, and then enter your AWS Access
+Key into the "Variable Value" box. You will need to do the same with "TF_VAR_secret_key" and "TF_VAR_db_password". The DB password is what will be set at the Database Password
+when you run Terraform apply, so you can set this to be whatever you want it to be. 
+
+## Terraform 
+
+Once you've cloned down the application, and set the environment variables, cd into the Terraform folder, and perform the following commands.
+
+- Terraform init
+
+This initialises Terraform
+
+- Terraform plan
+
+This prints out all the changes that will be made if you run terraform apply
+
+- Terraform Apply
+
+this applies those changes, and builds the Terraform infrastructure. 
+
+When you're done with everything, you can perform "Terraform Destroy" to tear down all your Terraform infrastructure. 
+
+## SSH-ing and Ansible
+
+- ssh into machines
+- have ansible controller
+- share keys to authorised keys so you can communicate and run playbook
+
+## Setting up the Database
+
+- on a machine on the VPC run mysql -h <endpoint> -u admin -p
+
+then run - 
+
+CREATE DATABASE testdb;
+CREATE DATABASE users;
+USE users;
+
+DROP TABLE IF EXISTS `users`;
+
+CREATE TABLE `users` (
+  `userName` varchar(30) NOT NULL
+);
+
+INSERT INTO `users` VALUES ('Bob'),('Jay'),('Matt'),('Ferg'),('Mo');
+
+
+## Setting up Jenkins
+
+- initial admin password
+- add credentials
+- git webhook
+- then youre good to go!
 
 ## Brief
 
