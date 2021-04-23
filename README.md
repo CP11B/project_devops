@@ -37,13 +37,37 @@ this applies those changes, and builds the Terraform infrastructure.
 
 When you're done with everything, you can perform "Terraform Destroy" to tear down all your Terraform infrastructure. 
 
-## SSH-ing and Ansible. 
+## SSH-ing and Ansible
+
+- ssh into machines
+- have ansible controller
+- share keys to authorised keys so you can communicate and run playbook
+
+## Setting up the Database
+
+- on a machine on the VPC run mysql -h <endpoint> -u admin -p
+
+then run - 
+
+CREATE DATABASE testdb;
+CREATE DATABASE users;
+USE users;
+
+DROP TABLE IF EXISTS `users`;
+
+CREATE TABLE `users` (
+  `userName` varchar(30) NOT NULL
+);
+
+INSERT INTO `users` VALUES ('Bob'),('Jay'),('Matt'),('Ferg'),('Mo');
 
 
+## Setting up Jenkins
 
-
-
-
+- initial admin password
+- add credentials
+- git webhook
+- then youre good to go!
 
 ## Brief
 
