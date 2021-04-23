@@ -8,13 +8,13 @@
     stages {
 
         stage("SSH to machine"){
-            steps{
-                script{
-                    sh "ssh 18.130.245.47 -oStrictHostKeyChecking=no << EOF"
-                    sh "rm -rf ./project_devops"
-                    sh "git clone https://github.com/CP11B/project_devops.git"
-                    sh "cd ./project_devops"
-                } 
+            steps{                
+                sh "ssh 18.130.245.47 -oStrictHostKeyChecking=no << EOF
+                sudo apt-get update
+                rm -rf ./project_devops
+                git clone https://github.com/CP11B/project_devops.git
+                cd ./project_devops"
+               
             }   
         }
 
