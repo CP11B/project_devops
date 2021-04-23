@@ -1,16 +1,16 @@
 version: "3.8"
 services:
-    db:
-        container_name: mysql
-        build: ./database
-        image: enixon/testdb
-        environment: 
-          MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-          MYSQL_DATABASE: testdb
-        volumes:
-        - type: volume
-          source: testdb
-          target: /var/lib/mysql
+    #db:
+    #    container_name: mysql
+    #    build: ./database
+    #    image: enixon/testdb
+    #    environment: 
+    #      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    #      MYSQL_DATABASE: testdb
+    #    volumes:
+     #   - type: volume
+    #      source: testdb
+    #      target: /var/lib/mysql
     nginx:
         image: nginx:latest
         ports:
