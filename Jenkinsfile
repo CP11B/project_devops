@@ -25,6 +25,7 @@
             steps{
                 sh '''
                     ssh jenkins@18.130.245.47 -oStrictHostKeyChecking=no << EOF
+                    cd ./project_devops
                     docker-compose build --parallel
                 '''
             }
@@ -34,6 +35,7 @@
             steps{
                 sh '''
                     ssh jenkins@18.130.245.47 -oStrictHostKeyChecking=no << EOF
+                    cd ./project_devops
                     docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD} docker.io
                     docker-compose push
                 '''
@@ -45,6 +47,7 @@
             steps{
                 sh '''
                     ssh jenkins@18.130.245.47 -oStrictHostKeyChecking=no << EOF
+                    cd ./project_devops
                     docker-compose up -d
                 '''
             }
