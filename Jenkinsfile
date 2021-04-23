@@ -15,42 +15,45 @@
                     rm -rf ./project_devops
                     git clone https://github.com/CP11B/project_devops.git
                     cd ./project_devops
+                    docker-compose build --parallel
+                    docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD} docker.io
+                    docker-compose push
+                    docker-compose up -d
                 '''
 
                
             }   
         }
 
-        stage("Build"){
-            steps{
-                sh '''
-                    ssh jenkins@18.130.245.47 -oStrictHostKeyChecking=no << EOF
-                    cd ./project_devops
-                    docker-compose build --parallel
-                '''
-            }
-        }
+        //stage("Build"){
+        //    steps{
+        //        sh '''
+        //            ssh jenkins@18.130.245.47 -oStrictHostKeyChecking=no << EOF
+        //            cd ./project_devops
+        //            
+        //        '''
+        //    }
+        //}
 
-        stage("Push"){
-            steps{
-                sh '''
-                    ssh jenkins@18.130.245.47 -oStrictHostKeyChecking=no << EOF
-                    cd ./project_devops
-                    docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD} docker.io
-                    docker-compose push
-                '''
-                }
-            }
+        //stage("Push"){
+        //    steps{
+        //        sh '''
+        //            ssh jenkins@18.130.245.47 -oStrictHostKeyChecking=no << EOF
+        //            cd ./project_devops
+                    
+        //        '''
+        //        }
+        //    }
         
         
-        stage("Deploy"){
-            steps{
-                sh '''
-                    ssh jenkins@18.130.245.47 -oStrictHostKeyChecking=no << EOF
-                    cd ./project_devops
-                    docker-compose up -d
-                '''
-            }
-        }      
+        //stage("Deploy"){
+        //    steps{
+        //        sh '''
+        //            ssh jenkins@18.130.245.47 -oStrictHostKeyChecking=no << EOF
+        //            cd ./project_devops
+                    
+        //        '''
+        //    }
+        //}      
     }
 }
