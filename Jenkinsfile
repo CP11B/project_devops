@@ -29,6 +29,7 @@
                 sh '''
                     ssh jenkins@35.176.101.104 -oStrictHostKeyChecking=no << EOF
                     cd ./project_devops
+                    python3 -m pip install -U pytest
                     python3 -m pytest
                     python3 -m pytest --cov application
                 '''
