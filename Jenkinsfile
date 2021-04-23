@@ -23,22 +23,30 @@
 
         stage("Build"){
             steps{
-                sh "docker-compose build --parallel"
+                sh '''
+                    ssh jenkins@18.130.245.47 -oStrictHostKeyChecking=no << EOF
+                    docker-compose build --parallel
+                '''
             }
         }
 
         stage("Push"){
             steps{
-                script{
-                    sh "docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD} docker.io"
-                    sh "docker-compose push"
+                sh '''
+                    ssh jenkins@18.130.245.47 -oStrictHostKeyChecking=no << EOF
+                    docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD} docker.io
+                    docker-compose push
+                '''
                 }
             }
         }
         
         stage("Deploy"){
             steps{
-                sh "docker-compose up -d"
+                sh '''
+                    ssh jenkins@18.130.245.47 -oStrictHostKeyChecking=no << EOF
+                    docker-compose up -d
+                '''
             }
         }      
     }
