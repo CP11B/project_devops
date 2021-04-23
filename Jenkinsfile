@@ -5,6 +5,9 @@
         MYSQL_ROOT_PASSWORD = credentials("MYSQL_ROOT_PASSWORD")
         DOCKER_PASSWORD = credentials("DOCKER_PASSWORD")
         DOCKER_USERNAME = credentials("DOCKER_USERNAME")
+        DATABASE_URI = credentials("SQLALCHEMY_DATABASE_URI")
+        SECRET_KEY = credentials("SECRET_KEY")
+        TEST_DATABASE_URI = credentials("TEST_DATABASE_URI")
     }
 
     stages {
