@@ -12,10 +12,10 @@
         stage("SSH to machine"){
             steps{                 
                 sh '''
-                    ssh jenkins@18.130.245.47 -oStrictHostKeyChecking=no << EOF
+                    ssh jenkins@35.176.101.104 -oStrictHostKeyChecking=no << EOF
                     sudo apt-get update
                     rm -rf ./project_devops
-                    git clone --single-branch --branch main https://github.com/CP11B/project_devops.git
+                    git clone --single-branch --branch dev https://github.com/CP11B/project_devops.git
                     cd ./project_devops
                     docker-compose build --parallel
                     docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD} docker.io
