@@ -1,24 +1,23 @@
 {% block head %}
-<title>Record Player</title>
+<title>Usernames</title>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>	
 {% endblock head %}
 
 {% block body_content %}
-    <h1 class="ui header">Home Page</h1>
+    <div class="container">
+    <h1 class="ui blue header">Home Page</h1>
     <p>Here are our users:</p>
     <form action="/" method="get">
         <div class="ui list">
             {% for user in response %}
             <div class="item">
-                <img class="small user icon">
-                <div class="content">
-                    <p>{{ user["userName"] }}</p>
-                </div>
+                <p>{{ user["userName"] }}</p>
             </div>
             {% endfor %}
         </div>
         <button onClick="window.location.reload();">Generate Usernames!</button>  
     </form>
+    </div>
 {% endblock body_content %}
