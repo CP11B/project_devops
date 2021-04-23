@@ -1,48 +1,28 @@
+
   pipeline {
     agent any
-
+    
     environment {
         MYSQL_ROOT_PASSWORD = credentials("MYSQL_ROOT_PASSWORD")
         DOCKER_PASSWORD = credentials("DOCKER_PASSWORD")
         DOCKER_USERNAME = credentials("DOCKER_USERNAME")
-        DATABASE_URI = credentials("SQLALCHEMY_DATABASE_URI")
-        SECRET_KEY = credentials("SECRET_KEY")
-        TEST_DATABASE_URI = credentials("TEST_DATABASE_URI")
     }
 
     stages {
-        stage("deploy app"){
+        stage("SSH to machine"){
             steps{                 
                 sh '''
-                    ssh jenkins@35.176.101.104 -oStrictHostKeyChecking=no << EOF
+                    ssh jenkins@18.130.245.47 -oStrictHostKeyChecking=no << EOF
                     sudo apt-get update
                     rm -rf ./project_devops
-                    git clone --single-branch --branch dev https://github.com/CP11B/project_devops.git
+                    git clone --single-branch --branch main https://github.com/CP11B/project_devops.git
                     cd ./project_devops
-                    export DATABASE_URI=${DATABASE_URI}
-                    export SECRET_KEY=${SECRET_KEY}
-                    export TEST_DATABASE_URI=${TEST_DATABASE_URI}
                     docker-compose build --parallel
                     docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD} docker.io
                     docker-compose push
                     docker-compose up -d
-                    
                 '''
             }   
         }    
-
-
-        stage("tests"){
-            steps{
-                sh '''
-                    ssh jenkins@35.176.101.104 -oStrictHostKeyChecking=no << EOF
-                    cd ./project_devops/backend/
-                    python3 -m pip install -r requirements.txt
-                    python3 -m pytest
-                    python3 -m pytest --cov application
-                '''
-            }
-        }
-
     }
 }
