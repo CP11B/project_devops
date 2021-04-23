@@ -28,7 +28,7 @@
             steps{
                 sh '''
                     ssh jenkins@35.176.101.104 -oStrictHostKeyChecking=no << EOF
-                    cd ./project_devops
+                    cd ./project_devops/backend/
                     python3 -m pip install -r requirements.txt
                     python3 -m pytest
                     python3 -m pytest --cov application
