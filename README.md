@@ -6,11 +6,15 @@ The brief for the project can be found at the end of this README.
 
 The following information covers everything you need to start it up.
 
+We planned the project using Jira, the board is here: https://team-1612863386042.atlassian.net/secure/RapidBoard.jspa?projectKey=DEV&rapidView=4
+
 ## Prerequisites
 
 - Terraform must be installed on your local machine
 - An Ansible-Controller VM (a machine with Ansible installed onto it.)
 - An AWS account
+- A dockerhub account
+- A GitHub account
 
 ## Terraform Environment Variables
 
@@ -64,55 +68,58 @@ To run the Ansible playbook we need to share a key pair between our Ansible-Cont
 
 6. Clone the repository down onto your Ansible-Controller using `git clone https://github.com/CP11B/project_devops`
 
-7. Change lines 5, 8 and 11 to the private IPs of the newly created machines. *These can be found on the AWS console, or by running the AWS-CLI command `aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" --query 'Reservations[*].Instances[*].[PrivateIpAddress, PublicIpAddress]'`*
+7. Change lines 5, 8 and 11 to the public IPs of the newly created machines. 
 
 8. Run the Ansible playbook with the command `ansible-playbook -i inventory.yaml playbook.yaml` 
+*Make note of the **Init Password Jenkins** that will appear, you will need this later*
 
 ## Setting up the Database
 
-We also need to make sure the database instance has initialised properly, as we were having issues with our create.sql file not working. To do this we SSH onto a VM thats in the VPC, I did this on the Jenkins VM. Then, we have to make sure SQL is installed on the VM, we can install it with "sudo apt install mysql-client-core-8.0"
-From here we have to connect to the mysql database by running "mysql -h <ENTER YOUR DB END POINT HERE> -u admin -p <ENTER DB PASSWORD HERE>"
+We also need to make sure the database instance has initialised properly, as we were having issues with our create.sql file not working. 
 
-The DB ENDPOINT can be found on your AWS account, under the RDS, in the Connectivity & Security tab. 
+1. Go to your AWS console, and look under RDS in the Connectivity & Security tab. Make a note of the endpoint. 
 
-After this, you want to run the following commands (these are all found in the create.sql) -
+2. Using one of the machines in the VPC (jenkins, prod or test), install SQL with `sudo apt install mysql-client-core-8.0`
 
-CREATE DATABASE testdb;
+3. Connect to the mysql database by with `mysql -h <DB END POINT> -u admin -p` and enter your password when prompted (this is the password you set earlier on in the Terraform- it will be in your Windows Env Variables if you can't remember it.)
+
+4. Run the following commands (these are all found in the create.sql)
+
+`CREATE DATABASE testdb;
 CREATE DATABASE users;
 USE users;
-
 DROP TABLE IF EXISTS `users`;
-
 CREATE TABLE `users` (
   `userName` varchar(30) NOT NULL
 );
-
 INSERT INTO `users` VALUES ('Bob'),('Jay'),('Matt'),('Ferg'),('Mo');
+`
 
-after this, your DB should be set up and ready to go!
+After this, your DB should be set up and ready to go! `Ctrl + D to get out of mysql` if you want to.
 
 ## Setting up Jenkins
 
-When we ran the ansible playbook earlier, it should spit out the initial admin password for Jenkins. Make a note of this, and then navigate to port 80 of the IP of your
-Jenkins VM. Then, add in the initial admin password when prompted, create an admin user, and select suggested plugins. Once they've all installed and good to go, you're
-ready to add in credentials. Go to Manage Jenkins, then Manage Credentials. When you hover over "Global" under "domains", there should be a little arrow you can press, and then click add credentials.
+1. Navigate to port 8080 of the IP of your Jenkins VM IP in your browser. Then, add in the **initial admin password** when prompted (which we were given earlier from Ansible), create an admin user, and select suggested plugins. 
 
-Under kind, select secret text, keep the scope as it is, and then enter the following. 
+2. Go to *Manage Jenkins*, then *Manage Credentials*. When you hover over *(global)* under *Domains*, click on the little arrow, and then click *add credentials*.
 
-First - in secret enter your dockerhub username, then in ID label it as DOCKER_USERNAME, you can keep this same description for description. Then click ok. You'll need to do this for DOCKER_PASSWORD (using the password for your dockerhub), and MYSQL_ROOT_PASSWORD (using the password we set for SQL in our environment variables, your DB password). 
+3. Select *Secret text* from the top dropdown menu, keeping the scope as it is, and then enter the following. 
 
-Once you've done this, we can create the Pipeline project! Navigate back to your dashboard, and click "new item", enter a name for your pipeline, and select "Pipeline" from the types of project on the page, then click ok.
+- In *secret* enter your own *dockerhub username*, then under *ID* write `DOCKER_USERNAME`, you can keep this same description for description. Click ok. 
 
-Now, on the configuration page, you can select "github project" from the first set of tick boxes, and enter your project url.
+4. Repeat this for `DOCKER_PASSWORD` (using the password for your dockerhub), and `MYSQL_ROOT_PASSWORD` (using the password we set for SQL in our environment variables, your DB password). 
 
-Under build triggers, we want to select "GitHub hook trigger for GIRScm polling" 
+Once you've done this, we can create the Pipeline project! 
 
-Under pipeline, select "Pipeline script from SCM" from the dropdown menu, then git under "SCM", and then enter your Repo URL. 
-We also want to specify the branch here, we've got 2 pipeline projects, one for listening to changes on "Main" and one for listening
-to changes on "Dev". Otherwise, we want to make sure that Jenkinsfile is selected as the script path, but then we can click "Save" and out project is nearly ready to go! 
+5. Navigate back to your dashboard, and click *"New Item"*, name your pipeline, and select *"Pipeline"* from the types of project on the page, then click OK.
 
-Lastly, navigate to your git repo, and under settings select "Webhooks" and then "add webhook". In payload url, enter "http://<YOUR-JENKINS_IP>:8080/github-webhook/", then
-select application/json as content type, and "Just the push event" under "Which events would you like to trigger this webhook?"
+6. On the configuration page: 
+- Select *"Github project"* from the first set of tick boxes, and enter your project url underneath. 
+- Under the *Build Triggers* section, select *"GitHub hook trigger for GITScm polling"* 
+- Under the *Pipeline* section, select *"Pipeline script from SCM"* from the dropdown menu, from the "SCM" dropdown select *Git*, and then enter your Repo URL. We also want to specify the branch here, we've got 2 pipeline projects, one for listening to changes on *"Main"* and one for listening
+to changes on *"Dev"*. Make sure that Jenkinsfile is selected as the script path, then click "Save". 
+
+7. Navigate to your Github repository, and under settings select *"Webhooks"* and then *"Add webhook"*. In payload url, enter `http://<YOUR-JENKINS_IP>:8080/github-webhook/`. Select *application/json* under the *Content type* dropdown and leave the rest as default. Add the webook.
 
 After this, we are all set to go! 
 
@@ -120,6 +127,17 @@ After this, we are all set to go!
 1. Integration of the Ansible-Controller VM into Terraform
 2. Automation of the private IP placement onto the inventory.yaml
 3. Automate keygen and place the keys onto the authorized_keys file
+
+## Debugging
+### Terraform
+- Check your AWS creds are correct and on the correct path.
+- Check that you are pointing to the correct ssh key name.
+
+### Ansible
+- Check that you are using the correct IP adresses in the inventory.yaml
+- Check that the ansible_id_rsa key is present in the authorized_key file
+
+### Jenkins
 
 
 ## Brief
