@@ -11,7 +11,7 @@
         stage("SSH to machine"){
             steps{                 
                 sh '''
-                    ssh jenkins@18.130.245.47 -oStrictHostKeyChecking=no << EOF
+                    ssh jenkins@63.35.236.16 -oStrictHostKeyChecking=no << EOF
                     sudo apt-get update
                     rm -rf ./project_devops
                     git clone --single-branch --branch main https://github.com/CP11B/project_devops.git
